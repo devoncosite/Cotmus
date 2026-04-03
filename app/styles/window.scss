@@ -1,0 +1,42 @@
+.window-header {
+  padding: 16px 24px;
+  border-bottom: var(--border-in-light);
+  position: relative;
+  background-color: var(--white);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.window-header-title {
+  max-width: calc(100% - 100px);
+  overflow: hidden;
+
+  .window-header-main-title {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    max-width: 50vw;
+    color: var(--black);
+  }
+
+  .window-header-sub-title {
+    font-size: 12px;
+    color: rgba(100, 116, 139, 0.9);
+    margin-top: 2px;
+  }
+}
+
+.window-actions {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.window-action-button:not(:first-child) {
+  margin-left: 4px;
+}
