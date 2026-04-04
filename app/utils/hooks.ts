@@ -3,43 +3,59 @@ import { useAccessStore, useAppConfig } from "../store";
 import { collectModelsWithDefaultModel } from "./model";
 import { ServiceProvider } from "../constant";
 
-function providerHasKey(
-  accessStore: ReturnType<typeof useAccessStore>,
-  providerName: string,
-): boolean {
+interface ProviderKeys {
+  openaiApiKey: string;
+  azureApiKey: string;
+  googleApiKey: string;
+  anthropicApiKey: string;
+  baiduApiKey: string;
+  bytedanceApiKey: string;
+  alibabaApiKey: string;
+  tencentSecretKey: string;
+  moonshotApiKey: string;
+  stabilityApiKey: string;
+  iflytekApiKey: string;
+  xaiApiKey: string;
+  chatglmApiKey: string;
+  deepseekApiKey: string;
+  siliconflowApiKey: string;
+  ai302ApiKey: string;
+}
+
+function providerHasKey(keys: ProviderKeys, providerName: string): boolean {
   switch (providerName) {
     case ServiceProvider.OpenAI:
-      return !!accessStore.openaiApiKey;
+      return !!keys.openaiApiKey;
     case ServiceProvider.Azure:
-      return !!accessStore.azureApiKey;
+      return !!keys.azureApiKey;
     case ServiceProvider.Google:
-      return !!accessStore.googleApiKey;
+      return !!keys.googleApiKey;
     case ServiceProvider.Anthropic:
-      return !!accessStore.anthropicApiKey;
+      return !!keys.anthropicApiKey;
     case ServiceProvider.Baidu:
-      return !!accessStore.baiduApiKey;
+      return !!keys.baiduApiKey;
     case ServiceProvider.ByteDance:
-      return !!accessStore.bytedanceApiKey;
+      return !!keys.bytedanceApiKey;
     case ServiceProvider.Alibaba:
-      return !!accessStore.alibabaApiKey;
+      return !!keys.alibabaApiKey;
     case ServiceProvider.Tencent:
-      return !!accessStore.tencentSecretKey;
+      return !!keys.tencentSecretKey;
     case ServiceProvider.Moonshot:
-      return !!accessStore.moonshotApiKey;
+      return !!keys.moonshotApiKey;
     case ServiceProvider.Stability:
-      return !!accessStore.stabilityApiKey;
+      return !!keys.stabilityApiKey;
     case ServiceProvider.Iflytek:
-      return !!accessStore.iflytekApiKey;
+      return !!keys.iflytekApiKey;
     case ServiceProvider.XAI:
-      return !!accessStore.xaiApiKey;
+      return !!keys.xaiApiKey;
     case ServiceProvider.ChatGLM:
-      return !!accessStore.chatglmApiKey;
+      return !!keys.chatglmApiKey;
     case ServiceProvider.DeepSeek:
-      return !!accessStore.deepseekApiKey;
+      return !!keys.deepseekApiKey;
     case ServiceProvider.SiliconFlow:
-      return !!accessStore.siliconflowApiKey;
+      return !!keys.siliconflowApiKey;
     case ServiceProvider["302.AI"]:
-      return !!accessStore.ai302ApiKey;
+      return !!keys.ai302ApiKey;
     default:
       return false;
   }
@@ -48,6 +64,25 @@ function providerHasKey(
 export function useAllModels() {
   const accessStore = useAccessStore();
   const configStore = useAppConfig();
+
+  const useCustomConfig = accessStore.useCustomConfig;
+  const openaiApiKey = accessStore.openaiApiKey;
+  const azureApiKey = accessStore.azureApiKey;
+  const googleApiKey = accessStore.googleApiKey;
+  const anthropicApiKey = accessStore.anthropicApiKey;
+  const baiduApiKey = accessStore.baiduApiKey;
+  const bytedanceApiKey = accessStore.bytedanceApiKey;
+  const alibabaApiKey = accessStore.alibabaApiKey;
+  const tencentSecretKey = accessStore.tencentSecretKey;
+  const moonshotApiKey = accessStore.moonshotApiKey;
+  const stabilityApiKey = accessStore.stabilityApiKey;
+  const iflytekApiKey = accessStore.iflytekApiKey;
+  const xaiApiKey = accessStore.xaiApiKey;
+  const chatglmApiKey = accessStore.chatglmApiKey;
+  const deepseekApiKey = accessStore.deepseekApiKey;
+  const siliconflowApiKey = accessStore.siliconflowApiKey;
+  const ai302ApiKey = accessStore.ai302ApiKey;
+
   const models = useMemo(() => {
     const all = collectModelsWithDefaultModel(
       configStore.models,
@@ -58,32 +93,51 @@ export function useAllModels() {
     // When the user has enabled custom config (their own API keys),
     // only show models for providers that have a key configured.
     // When using the default server config, show all available models.
-    if (!accessStore.useCustomConfig) {
+    if (!useCustomConfig) {
       return all;
     }
 
+    const keys: ProviderKeys = {
+      openaiApiKey,
+      azureApiKey,
+      googleApiKey,
+      anthropicApiKey,
+      baiduApiKey,
+      bytedanceApiKey,
+      alibabaApiKey,
+      tencentSecretKey,
+      moonshotApiKey,
+      stabilityApiKey,
+      iflytekApiKey,
+      xaiApiKey,
+      chatglmApiKey,
+      deepseekApiKey,
+      siliconflowApiKey,
+      ai302ApiKey,
+    };
+
     return all.filter((m) => {
       const pName = m.provider?.providerName ?? "";
-      return providerHasKey(accessStore, pName);
+      return providerHasKey(keys, pName);
     });
   }, [
-    accessStore.useCustomConfig,
-    accessStore.openaiApiKey,
-    accessStore.azureApiKey,
-    accessStore.googleApiKey,
-    accessStore.anthropicApiKey,
-    accessStore.baiduApiKey,
-    accessStore.bytedanceApiKey,
-    accessStore.alibabaApiKey,
-    accessStore.tencentSecretKey,
-    accessStore.moonshotApiKey,
-    accessStore.stabilityApiKey,
-    accessStore.iflytekApiKey,
-    accessStore.xaiApiKey,
-    accessStore.chatglmApiKey,
-    accessStore.deepseekApiKey,
-    accessStore.siliconflowApiKey,
-    accessStore.ai302ApiKey,
+    useCustomConfig,
+    openaiApiKey,
+    azureApiKey,
+    googleApiKey,
+    anthropicApiKey,
+    baiduApiKey,
+    bytedanceApiKey,
+    alibabaApiKey,
+    tencentSecretKey,
+    moonshotApiKey,
+    stabilityApiKey,
+    iflytekApiKey,
+    xaiApiKey,
+    chatglmApiKey,
+    deepseekApiKey,
+    siliconflowApiKey,
+    ai302ApiKey,
     accessStore.customModels,
     accessStore.defaultModel,
     configStore.customModels,
